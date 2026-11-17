@@ -1,0 +1,53 @@
+{% extends 'food/base.html' %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4" >
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <div class="title">
+                        Login
+                    </div>
+                </div>
+              <div class="card-body">
+            
+                <form method="POST">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% for field in form %}
+                        <div class="group-form mb-3">
+                            {{field.name}}
+                            {{field}}
+                            {% if field.errors %}
+                                <div class="text-danger small mt-1">
+                                    {% for error in field.errors %}
+                                        <div>{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                        <br>
+                    <button class="btn-info bg-info text-white d-block mx-auto" type="submit" >Login</button>
+                
+                </form>
+                <h7>Don't have an account? Register here:</h7>
+                <a href="{% url 'register' %}"> Register</a>
+              </div>              
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
