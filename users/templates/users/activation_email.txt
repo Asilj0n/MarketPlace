@@ -1,0 +1,10 @@
+{% autoescape off %}Hi {{ user.username }},
+
+Welcome to UCA Marketplace! Click the link below to activate your account:
+
+{{ activation_url }}
+
+If you didn't sign up, you can ignore this email.
+
+UCA Marketplace
+{% endautoescape %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}Browse listings · UCA Marketplace{% endblock %}
+{% block body %}
+<form method="get" class="card card-body mb-4">
+    <div class="row g-2 align-items-end">
+        <div class="col-12 col-lg-4">
+            <label for="q" class="form-label small text-muted mb-1">Search</label>
+            <input type="search" id="q" name="q" value="{{ filters.q }}" class="form-control" placeholder="Textbook, lamp, jacket…">
+        </div>
+        <div class="col-6 col-lg-3">
+            <label for="category" class="form-label small text-muted mb-1">Category</label>
+            <select id="category" name="category" class="form-select">
+                <option value="">All categories</option>
+                {% for value, label in categories %}
+                    <option value="{{ value }}" {% if filters.category == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-6 col-lg-2">
+            <label for="campus" class="form-label small text-muted mb-1">Campus</label>
+            <select id="campus" name="campus" class="form-select">
+                <option value="">All campuses</option>
+                {% for value, label in campuses %}
+                    <option value="{{ value }}" {% if filters.campus == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-lg-3 d-flex flex-wrap gap-3 align-items-center">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="free" name="free" value="1" {% if filters.free %}checked{% endif %}>
+                <label class="form-check-label" for="free">Free only</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="show_sold" name="show_sold" value="1" {% if filters.show_sold %}checked{% endif %}>
+                <label class="form-check-label" for="show_sold">Show sold</label>
+            </div>
+            <button type="submit" class="btn btn-dark ms-auto">Search</button>
+        </div>
+    </div>
+</form>
+
+<div class="d-flex justify-content-between align-items-baseline mb-3">
+    <h1 class="h4 mb-0">Listings</h1>
+    <span class="text-muted small">{{ paginator.count }} result{{ paginator.count|pluralize }}</span>
+</div>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+    {% for listing in listings %}
+        <div class="col">{% include 'listings/_listing_card.html' %}</div>
+    {% empty %}
+        <div class="col-12">
+            <div class="text-center text-muted py-5">
+                <p class="mb-3">No listings match your search yet.</p>
+                <a href="{% url 'listings:create' %}" class="btn btn-warning">Be the first to sell something</a>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav class="mt-4" aria-label="Pages">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?{% if querystring %}{{ querystring }}&{% endif %}page={{ page_obj.next_page_number }}">Next</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

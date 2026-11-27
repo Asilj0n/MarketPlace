@@ -1,0 +1,57 @@
+body {
+    background-color: #f5f6f8;
+}
+
+.listing-card {
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+.listing-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+}
+
+/* Same-size photos on every card, cropped to fit */
+.listing-photo {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    width: 100%;
+    background-color: #e9ecef;
+}
+.listing-photo-placeholder {
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 2.5rem;
+}
+
+.listing-detail-photo {
+    width: 100%;
+    max-height: 480px;
+    object-fit: contain;
+    background-color: #e9ecef;
+}
+
+.is-sold .listing-photo,
+.is-sold .listing-photo-placeholder {
+    filter: grayscale(1);
+    opacity: .6;
+}
+
+.avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.avatar-initial {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #212529;
+    color: #fff;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}

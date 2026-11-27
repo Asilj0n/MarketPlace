@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'users.apps.UsersConfig',
-    'food.apps.FoodConfig',
+    'listings.apps.ListingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,12 +52,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
-# ROOT_URLCONF = 'food.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Bishkek'
 
 USE_I18N = True
 
@@ -119,14 +118,42 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# Uploaded files (profile photos, listing photos)
+MEDIA_ROOT = BASE_DIR / 'pictures'
+MEDIA_URL = '/pictures/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = "food:index"
 LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'listings:index'
+LOGOUT_REDIRECT_URL = 'login'
 
-MEDIA_ROOT=os.path.join(BASE_DIR, 'pictures')
-MEDIA_URL='/pictures/'
+# Map Django's "error" message level to Bootstrap's "danger" alert class
+from django.contrib.messages import constants as message_constants  # noqa: E402
+MESSAGE_TAGS = {message_constants.ERROR: 'danger'}
+
+
+# --- Campus marketplace ---
+
+# Only people with an email address on this domain can register.
+ALLOWED_EMAIL_DOMAIN = 'ucentralasia.org'
+
+# Largest photo a user can upload, in megabytes.
+MAX_UPLOAD_SIZE_MB = 5
+
+# Email (used to send account activation links).
+# In development emails are printed to the terminal running `runserver`.
+# For real emails, set EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
+# and the EMAIL_HOST / EMAIL_PORT / EMAIL_HOST_USER / EMAIL_HOST_PASSWORD variables.
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'true').lower() == 'true'
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'UCA Marketplace <noreply@ucentralasia.org>')

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}{{ listing.title }} · UCA Marketplace{% endblock %}
+{% block body %}
+<a href="{% url 'listings:index' %}" class="small text-decoration-none">&larr; Back to listings</a>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-7">
+        <div class="{% if listing.status == 'sold' %}is-sold{% endif %}">
+            {% if listing.image %}
+                <img src="{{ listing.image.url }}" class="rounded listing-detail-photo" alt="{{ listing.title }}">
+            {% else %}
+                <div class="rounded listing-photo-placeholder" aria-hidden="true">&#128230;</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <span class="badge text-bg-{{ listing.status_badge }} mb-2">{{ listing.get_status_display }}</span>
+        <h1 class="h3">{{ listing.title }}</h1>
+        <p class="fs-3 fw-bold {% if listing.is_free %}text-success{% endif %}">
+            {% if listing.is_free %}Free{% else %}{{ listing.price }} {{ listing.currency }}{% endif %}
+        </p>
+
+        <dl class="row small mb-3">
+            <dt class="col-4 text-muted fw-normal">Category</dt><dd class="col-8">{{ listing.get_category_display }}</dd>
+            <dt class="col-4 text-muted fw-normal">Condition</dt><dd class="col-8">{{ listing.get_condition_display }}</dd>
+            <dt class="col-4 text-muted fw-normal">Campus</dt><dd class="col-8">{{ listing.get_campus_display }}</dd>
+            <dt class="col-4 text-muted fw-normal">Posted</dt><dd class="col-8">{{ listing.created_at|timesince }} ago</dd>
+            <dt class="col-4 text-muted fw-normal">Seller</dt><dd class="col-8">{{ listing.seller.username }}</dd>
+        </dl>
+
+        <p style="white-space: pre-line">{{ listing.description }}</p>
+
+        {% if is_owner %}
+            <div class="card card-body bg-light">
+                <h2 class="h6">Manage your listing</h2>
+                <form method="post" action="{% url 'listings:update_status' listing.pk %}" class="d-flex gap-2 mb-3">
+                    {% csrf_token %}
+                    <select name="status" class="form-select form-select-sm" aria-label="Status">
+                        {% for value, label in statuses %}
+                            <option value="{{ value }}" {% if listing.status == value %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-dark text-nowrap">Update status</button>
+                </form>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'listings:update' listing.pk %}" class="btn btn-sm btn-outline-dark">Edit</a>
+                    <a href="{% url 'listings:delete' listing.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                </div>
+            </div>
+        {% elif listing.status == 'sold' %}
+            <div class="alert alert-secondary">This item has been sold.</div>
+        {% elif whatsapp_url %}
+            {% if listing.status == 'reserved' %}
+                <div class="alert alert-warning small">Someone has reserved this item. You can still message the seller in case the deal falls through.</div>
+            {% endif %}
+            <a href="{{ whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-success btn-lg w-100">
+                Message seller on WhatsApp
+            </a>
+            <p class="small text-muted mt-2 mb-0">
+                {{ listing.seller.profile.whatsapp_number }}. Agree on a time, meet on campus and pay in person.
+            </p>
+        {% else %}
+            <div class="alert alert-light border small">The seller hasn't added a WhatsApp number yet.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
