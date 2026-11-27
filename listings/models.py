@@ -76,7 +76,7 @@ class Listing(models.Model):
         digits = self.seller.profile.whatsapp_digits
         if not digits:
             return ''
-        text = f'Hi! I saw your listing "{self.title}" on UCA Marketplace. Is it still available?'
+        text = f'Hi! I saw your listing "{self.title}" on MarketPlace. Is it still available?'
         if request is not None:
             text += ' ' + request.build_absolute_uri(self.get_absolute_url())
         return f'https://wa.me/{digits}?text={quote(text)}'

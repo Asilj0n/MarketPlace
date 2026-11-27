@@ -21,7 +21,7 @@ def send_activation_email(request, user):
         'user': user,
         'activation_url': activation_url,
     })
-    send_mail('Activate your UCA Marketplace account', message, None, [user.email])
+    send_mail('Activate your MarketPlace account', message, None, [user.email])
 
 
 def register(request):
@@ -54,7 +54,7 @@ def activate(request, uidb64, token):
         user.save(update_fields=['is_active'])
         # Logging in updates last_login, which also makes this link stop working.
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        messages.success(request, 'Your account is active. Welcome to UCA Marketplace!')
+        messages.success(request, 'Your account is active. Welcome to MarketPlace!')
         return redirect('listings:index')
 
     messages.error(request, 'This activation link is invalid or has already been used.')

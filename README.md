@@ -1,4 +1,4 @@
-# UCA Marketplace
+# MarketPlace
 
 A campus marketplace for University of Central Asia students. Students list things they want to sell or give away (textbooks, electronics, dorm furniture, clothes and more), other students browse and message the seller on WhatsApp, and they meet on campus to make the deal. There is no online payment.
 
@@ -28,8 +28,8 @@ static/css/      # site styles
 ## Getting started
 
 ```bash
-git clone https://github.com/Asilj0n/django_food_app.git
-cd django_food_app
+git clone https://github.com/Asilj0n/MarketPlace.git
+cd MarketPlace
 python -m venv venv
 venv\Scripts\activate            # Windows
 # source venv/bin/activate       # macOS / Linux
@@ -53,7 +53,7 @@ EMAIL_HOST=smtp.example.com
 EMAIL_PORT=587
 EMAIL_HOST_USER=...
 EMAIL_HOST_PASSWORD=...
-DEFAULT_FROM_EMAIL=UCA Marketplace <noreply@example.com>
+DEFAULT_FROM_EMAIL=MarketPlace <noreply@example.com>
 ```
 
 You can also activate a user by hand in `/admin/` by ticking **Active**.

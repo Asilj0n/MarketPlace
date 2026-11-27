@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block title %}Sign up · UCA Marketplace{% endblock %}
+{% block title %}Sign up · MarketPlace{% endblock %}
 {% block body %}
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-5">
         <div class="card">
             <div class="card-body p-4">
                 <h1 class="h4">Create your account</h1>
-                <p class="text-muted small">UCA Marketplace is only for University of Central Asia students.</p>
+                <p class="text-muted small">MarketPlace is only for University of Central Asia students.</p>
                 <form method="post" novalidate>
                     {% csrf_token %}
                     {% include 'includes/form_fields.html' %}
